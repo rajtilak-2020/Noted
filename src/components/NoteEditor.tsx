@@ -8,10 +8,11 @@ import {
   DialogContent, 
   DialogHeader, 
   DialogTitle,
+  DialogDescription,
   DialogFooter,
   DialogTrigger
 } from '@/components/ui/dialog';
-import { Trash2 } from 'lucide-react';
+import { Trash2, PlusCircle } from 'lucide-react';
 import { Note } from '@/types';
 import { useNotes } from '@/contexts/NotesContext';
 
@@ -20,7 +21,7 @@ interface NoteEditorProps {
 }
 
 export const NoteEditor = ({ note }: NoteEditorProps) => {
-  const { updateNote, deleteNote } = useNotes();
+  const { updateNote, deleteNote, createNote } = useNotes();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -60,10 +61,14 @@ export const NoteEditor = ({ note }: NoteEditorProps) => {
 
   if (!note) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center text-muted-foreground">
-          <p>No note selected</p>
-          <p className="text-sm">Select a note from the list or create a new one</p>
+      <div className="flex flex-col items-center justify-center h-full p-4">
+        <div className="text-center text-muted-foreground max-w-md">
+          <h2 className="text-2xl font-semibold mb-2">Welcome to Notes App</h2>
+          <p className="mb-6">Create your first note to get started organizing your thoughts.</p>
+          <Button onClick={createNote} className="flex items-center gap-2">
+            <PlusCircle size={18} />
+            <span>Create New Note</span>
+          </Button>
         </div>
       </div>
     );
@@ -89,8 +94,10 @@ export const NoteEditor = ({ note }: NoteEditorProps) => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Delete Note</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. Are you sure you want to permanently delete this note?
+              </DialogDescription>
             </DialogHeader>
-            <p>Are you sure you want to delete this note? This action cannot be undone.</p>
             <DialogFooter>
               <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
                 Cancel

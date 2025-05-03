@@ -1,44 +1,20 @@
 
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
 import { Note, NotesState, NotesContextType, SortOption, SortDirection } from '../types';
 
-// Initial demo notes
-const demoNotes: Note[] = [
-  {
-    id: '1',
-    title: 'Getting Started with Notes App',
-    content: 'Welcome to your new Notes App! This is a simple app to help you organize your thoughts and ideas. You can create, edit, and delete notes. You can also search for notes and sort them by title, creation date, or last updated date.',
-    createdAt: new Date('2023-05-15T10:00:00'),
-    updatedAt: new Date('2023-05-15T10:00:00'),
-    tags: ['welcome', 'tutorial']
-  },
-  {
-    id: '2',
-    title: 'Features of Notes App',
-    content: 'This Notes App comes with a variety of features:\n\n- Create, edit, and delete notes\n- Rich text editing\n- Search for notes\n- Sort notes by title, creation date, or last updated date\n- Tag your notes for better organization',
-    createdAt: new Date('2023-05-15T11:00:00'),
-    updatedAt: new Date('2023-05-15T12:30:00'),
-    tags: ['features', 'tutorial']
-  },
-  {
-    id: '3',
-    title: 'Markdown Support',
-    content: 'You can use Markdown in your notes to format text. For example:\n\n**This text is bold**\n*This text is italic*\n\n# This is a heading\n\n- This is a bullet point\n- This is another bullet point',
-    createdAt: new Date('2023-05-16T09:00:00'),
-    updatedAt: new Date('2023-05-16T15:45:00'),
-    tags: ['markdown', 'tips']
-  }
-];
-
+// Initial state without demo notes
 const initialState: NotesState = {
-  notes: demoNotes,
-  activeNoteId: demoNotes[0].id,
+  notes: [],
+  activeNoteId: null,
   searchQuery: '',
   sortBy: 'updatedAt',
   sortDirection: 'desc',
   isLoading: false,
   error: null
 };
+
+// Local storage keys
+const STORAGE_KEY = 'notes_app_data';
 
 type NotesAction =
   | { type: 'CREATE_NOTE'; payload: Note }
@@ -48,7 +24,8 @@ type NotesAction =
   | { type: 'SEARCH_NOTES'; payload: string }
   | { type: 'SORT_NOTES'; payload: { sortBy: SortOption; direction: SortDirection } }
   | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'SET_ERROR'; payload: string | null };
+  | { type: 'SET_ERROR'; payload: string | null }
+  | { type: 'LOAD_NOTES'; payload: Note[] };
 
 const notesReducer = (state: NotesState, action: NotesAction): NotesState => {
   switch (action.type) {
@@ -109,6 +86,14 @@ const notesReducer = (state: NotesState, action: NotesAction): NotesState => {
         error: action.payload
       };
     }
+    case 'LOAD_NOTES': {
+      const notes = action.payload;
+      return {
+        ...state,
+        notes,
+        activeNoteId: notes.length > 0 ? notes[0].id : null
+      };
+    }
     default:
       return state;
   }
@@ -118,6 +103,49 @@ const NotesContext = createContext<NotesContextType | undefined>(undefined);
 
 export const NotesProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(notesReducer, initialState);
+
+  // Load notes from local storage on initial load
+  useEffect(() => {
+    const loadNotes = () => {
+      try {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          
+          // Convert string dates back to Date objects
+          const processedNotes = parsedData.notes.map((note: any) => ({
+            ...note,
+            createdAt: new Date(note.createdAt),
+            updatedAt: new Date(note.updatedAt)
+          }));
+          
+          dispatch({ type: 'LOAD_NOTES', payload: processedNotes });
+        }
+      } catch (error) {
+        console.error('Failed to load notes from localStorage:', error);
+        dispatch({ type: 'SET_ERROR', payload: 'Failed to load your notes. Please try again.' });
+      }
+    };
+
+    loadNotes();
+  }, []);
+
+  // Save notes to local storage whenever they change
+  useEffect(() => {
+    try {
+      const dataToSave = {
+        notes: state.notes,
+        sortBy: state.sortBy,
+        sortDirection: state.sortDirection
+      };
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+    } catch (error) {
+      console.error('Failed to save notes to localStorage:', error);
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to save your changes. Please try again.' });
+    }
+  }, [state.notes, state.sortBy, state.sortDirection]);
 
   const createNote = () => {
     const newNote: Note = {
