@@ -14,8 +14,7 @@ export const NoteEditor = ({ note }: NoteEditorProps) => {
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!note) return;
-    updateNote({
-      ...note,
+    updateNote(note.id, {
       title: e.target.value,
       updatedAt: new Date().toISOString(),
     });
@@ -23,8 +22,7 @@ export const NoteEditor = ({ note }: NoteEditorProps) => {
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (!note) return;
-    updateNote({
-      ...note,
+    updateNote(note.id, {
       content: e.target.value,
       updatedAt: new Date().toISOString(),
     });
