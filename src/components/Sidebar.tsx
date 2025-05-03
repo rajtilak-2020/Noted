@@ -65,17 +65,14 @@ export const Sidebar = ({ isMobile, onCloseMobile }: SidebarProps) => {
   };
 
   return (
-    <div 
-      data-sidebar="sidebar"
-      className={`flex flex-col h-full bg-sidebar border-r border-border ${isMobile ? 'w-[85%] max-w-xs shadow-xl' : 'w-72'}`}
-    >
+    <div className={`flex flex-col h-full bg-sidebar border-r border-border ${isMobile ? 'w-full' : 'w-72'}`}>
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-4">
           <h1 className="font-semibold text-xl text-sidebar-foreground">Notes</h1>
           <Button 
             onClick={handleCreateNote}
             size="sm" 
-            className="rounded-full w-8 h-8 p-0 bg-sidebar-primary hover:bg-sidebar-primary/90 transition-all duration-300 hover:scale-105"
+            className="rounded-full w-8 h-8 p-0 bg-sidebar-primary hover:bg-sidebar-primary/90"
           >
             <Plus size={16} />
           </Button>
