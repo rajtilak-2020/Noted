@@ -82,11 +82,39 @@
     to { transform: scale(1); opacity: 1; }
   }
   
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+  }
+  
+  @keyframes slide-in-from-left {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes bounce-in {
+    0% { transform: scale(0.8); opacity: 0; }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
   .animate-fade-in {
     animation: fade-in 0.3s ease-out;
   }
   
   .animate-scale-in {
     animation: scale-in 0.3s ease-out;
+  }
+  
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-slide-in {
+    animation: slide-in-from-left 0.3s ease-out;
+  }
+  
+  .animate-bounce-in {
+    animation: bounce-in 0.5s ease-out;
   }
 }

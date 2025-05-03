@@ -67,7 +67,7 @@ export const Sidebar = ({ isMobile, onCloseMobile }: SidebarProps) => {
   return (
     <div 
       data-sidebar="sidebar"
-      className={`flex flex-col h-full bg-sidebar border-r border-border ${isMobile ? 'w-[85%] max-w-xs' : 'w-72'}`}
+      className={`flex flex-col h-full bg-sidebar border-r border-border ${isMobile ? 'w-[85%] max-w-xs shadow-xl' : 'w-72'}`}
     >
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-4">

@@ -41,7 +41,7 @@ const NotesApp = () => {
         <Button 
           variant="ghost" 
           size="icon" 
-          className="fixed top-4 left-4 z-30 bg-background/80 backdrop-blur-sm"
+          className="fixed top-4 left-4 z-30 bg-background/80 backdrop-blur-sm shadow-md"
           onClick={toggleSidebar}
           data-sidebar="trigger"
         >
@@ -63,8 +63,8 @@ const NotesApp = () => {
       )}
       
       {/* Main content area */}
-      <div className={`flex-1 flex flex-col transition-all duration-200 ${isMobile ? 'px-2' : ''}`}>
-        <main className="flex-1 h-full">
+      <div className={`flex-1 flex flex-col transition-all duration-200 ${isMobile ? 'px-4 pt-16' : ''}`}>
+        <main className="flex-1 h-full overflow-auto">
           <NoteEditor note={activeNote} />
         </main>
       </div>
