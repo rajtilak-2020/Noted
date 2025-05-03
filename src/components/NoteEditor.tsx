@@ -1,20 +1,19 @@
-
-import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle,
+import {
+  Dialog,
+  DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
-import { Trash2, PlusCircle } from 'lucide-react';
-import { Note } from '@/types';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useNotes } from '@/contexts/NotesContext';
+import { Note } from '@/types';
+import { PlusCircle, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 interface NoteEditorProps {
   note: Note | null;
@@ -65,10 +64,15 @@ export const NoteEditor = ({ note }: NoteEditorProps) => {
         <div className="text-center text-muted-foreground max-w-md">
           <h2 className="text-2xl font-semibold mb-2">Welcome to Notes App</h2>
           <p className="mb-6">Create your first note to get started organizing your thoughts.</p>
-          <Button onClick={createNote} className="flex items-center gap-2">
-            <PlusCircle size={18} />
-            <span>Create New Note</span>
-          </Button>
+          <div className="flex justify-center">
+            <Button 
+              onClick={createNote} 
+              className="flex items-center gap-1 transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
+            >
+              <PlusCircle size={18} className="animate-pulse" />
+              <span>Create</span>
+            </Button>
+          </div>
         </div>
       </div>
     );
