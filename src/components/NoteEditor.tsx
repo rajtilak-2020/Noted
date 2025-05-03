@@ -65,7 +65,10 @@ export const NoteEditor = ({ note }: NoteEditorProps) => {
         <div className="text-center text-muted-foreground max-w-md">
           <h2 className="text-2xl font-semibold mb-2">Welcome to Notes App</h2>
           <p className="mb-6">Create your first note to get started organizing your thoughts.</p>
-          <Button onClick={createNote} className="flex items-center gap-2">
+          <Button 
+            onClick={createNote} 
+            className="flex items-center gap-2 transition-all duration-300 hover:scale-105 animate-fade-in"
+          >
             <PlusCircle size={18} />
             <span>Create New Note</span>
           </Button>
