@@ -16,7 +16,7 @@ export const NoteEditor = ({ note }: NoteEditorProps) => {
     if (!note) return;
     updateNote(note.id, {
       title: e.target.value,
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date(),
     });
   };
 
@@ -24,7 +24,7 @@ export const NoteEditor = ({ note }: NoteEditorProps) => {
     if (!note) return;
     updateNote(note.id, {
       content: e.target.value,
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date(),
     });
   };
 
